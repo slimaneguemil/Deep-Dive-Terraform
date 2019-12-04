@@ -21,7 +21,6 @@ pipeline {
             steps {
                 dir('module5/networking/'){
                      sh "$PWD"
-                     sh "sudo rm .terraform"
                      sh "ls -la"
                      sh "terraform init -input=false -plugin-dir=/var/jenkins_home/terraform_plugins \
                                          --backend-config='dynamodb_table=$DYNAMODB_STATELOCK' --backend-config='bucket=$NETWORKING_BUCKET' \
