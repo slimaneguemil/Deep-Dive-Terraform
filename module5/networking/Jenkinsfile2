@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+    tools {
+        "org.jenkinsci.plugins.terraform.TerraformInstallation" "terraform-0.12.17"
+    }
+    parameters {
+        string(name: 'LAMBDA_URL', defaultValue: '', description: 'URL to the Lamdba function')
+        string(name: 'WORKSPACE', defaultValue: 'development', description:'worspace to use in Terraform')
+    }
+    environment {
+        TF_HOME = tool('terraform-0.12.17')
+        TF_IN_AUTOMATION = "true"
+        PATH = "$TF_HOME:$PATH"
+        DYNAMODB_STATELOCK = "ddt-tfstatelock"
+        NETWORKING_BUCKET = "ddt-networking"
+        NETWORKING_ACCESS_KEY = credentials('networking_access_key')
+        NETWORKING_SECRET_KEY = credentials('networking_secret_key')
+    }
+    stages {
+        stage('NetworkInit'){
+            steps {
+                dir('module5/networking/'){
+                    sh "echo \$PWD"
+                    sh 'terraform --version'
+                    sh "whoami"
+                }
+            }
+        }
+    }
+}
