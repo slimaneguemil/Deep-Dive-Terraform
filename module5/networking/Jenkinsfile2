@@ -21,6 +21,7 @@ pipeline {
             steps {
                 dir('module5/networking/'){
                      sh "id"
+                      sh 'terraform --version'
 
                 }
             }
